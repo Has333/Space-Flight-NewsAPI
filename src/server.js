@@ -1,28 +1,21 @@
-const express = require('express');
-const MongoClient = require('mongodb').MongoClient
-const routes = require('./routes.js');
-require("dotenv").config();
+import express from "express";
+import mongoose from "mongoose";
+import router from "./routes.js";
+import "dotenv/config.js";
 
-const DB = process.env.DB;
-const DBPASS = process.env.DBPASS;
-const PORT = process.env.PORT || 3000;
 const server = express();
+const DB = process.env.DB;
+const DBPASSWORD = process.env.DBPASSWORD;
+const PORT = process.env.PORT || 3000;
 
-const uri = `mongodb+srv://mongodbw:${DBPASS}@cluster0.xybv5.mongodb.net/${DB}?retryWrites=true&w=majority`;
+mongoose.connect(`mongodb+srv://mongodbw:${DBPASSWORD}@cluster0.xybv5.mongodb.net/${DB}?retryWrites=true&w=majority`,
+    {useNewUrlParser: true,
+    useUnifiedTopology: true,})
+    .then(() => console.log(`Application connected to ${DB} database`))
+    .catch((err) => console.log(err));
 
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
 
-client.connect(() => {
-  const collection = client.db("test").collection("devices");
-  console.log(`Application connected to ${DB} Database`);
-  client.close();
-});
-
-server.use(routes)
-
+server.use(router);
 server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
-
-
