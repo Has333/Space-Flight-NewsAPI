@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import router from "./routes.js";
+import articleController from './controllers/articleController.js'
 import "dotenv/config.js";
 
 const server = express();
@@ -17,5 +18,5 @@ mongoose.connect(`mongodb+srv://mongodbw:${DBPASSWORD}@cluster0.xybv5.mongodb.ne
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 
-server.use(router);
+server.use(router, articleController);
 server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
