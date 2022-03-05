@@ -1,22 +1,11 @@
-import express from "express";
-import mongoose from "mongoose";
-import router from "./routes.js";
-import articleController from './controllers/articleController.js'
+//import { App } from "./app.js";
+import express from 'express';
+import { MongoDB } from "./common/databases/mongodb.js";
 import "dotenv/config.js";
 
-const server = express();
-const DB = process.env.DB;
-const DBPASSWORD = process.env.DBPASSWORD;
 const PORT = process.env.PORT || 3000;
+const server = express();
 
-mongoose.connect(`mongodb+srv://mongodbw:${DBPASSWORD}@cluster0.xybv5.mongodb.net/${DB}?retryWrites=true&w=majority`,
-    {useNewUrlParser: true,
-    useUnifiedTopology: true,})
-    .then(() => console.log(`Application connected to ${DB} database`))
-    .catch((err) => console.log(err));
+MongoDB.init()
 
-server.use(express.json());
-server.use(express.urlencoded({ extended: false }));
-
-server.use(router, articleController);
 server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));

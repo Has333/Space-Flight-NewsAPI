@@ -1,37 +1,16 @@
-import express from "express";
-import fetch from "node-fetch";
+import { Router } from "express"
+import { articleController } from "./controllers/articleController.js"
 
-const router = express.Router();
+const routes = new Router();
 
-router.get("/", (req, res) => {
-  res.status(200).send("Back-end Challenge 2021 🏅 - Space Flight News");
-});
+routes.get("/articles", articleController.listAll);
 
+routes.get("/articles/:id",articleController.listById);
 
-router.get("/articles", async (req, res) => {
-  try {
-    const response = await fetch('https://api.spaceflightnewsapi.net/v3/articles');
-    const data = await response.json();
-    res.status(200).send(data)
-  } 
-catch (err) {
-    console.log(err)
-    res.status(500).send('Unable to fetch data from API')
-  }
-});
+routes.post("/articles", articleController.create);
 
+routes.put("/articles/:id", articleController.updateById);
 
-router.get("/articles/:id", async (req, res) => {
-try {
-  const response = await fetch('https://api.spaceflightnewsapi.net/v3/articles/?_id=' + req.params.id);
-  const data = await response.json();
+routes.delete("/articles/:id", articleController.deleteById)
 
-  res.status(200).send(data)
-} 
-catch (err) {
-  console.log(err)
-  res.status(500).send('Unable to fetch data from API')
-}
-});
-
-export default router;
+export { routes };

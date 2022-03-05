@@ -1,64 +1,84 @@
 import Article from '../models/article.js'
-import express from 'express';
-const router = express.Router();
 
-router.post("/articles", async (req, res) => {
-   try {
-    const newArticle = new Article({
-        id: req.body.id,
-        featured: req.body.featured,
-        title: req.body.title,
-        url: req.body.url,
-        imageUrl: req.body.imageUrl,
-        newsSite: req.body.newsSite,
-        summary: req.body.summary,
-        publishedAt: req.body.publishedAt,
-        launches: [
-            {
-                id: req.body.id,
-                provider: req.body.provider
-            }
-        ],
-        events: [
-            {
-                id: req.body.id,
-                provider: req.body.provider
-            }
-        ]
-     });
-    
-     await newArticle.save();
+class ArticleController {
+    async listAll(req, res) {
+        try {
+            const articles = await Article.find().exec();
 
-     res.status(200).send("Database updated with new article");
-    } 
-
-   catch (err) {
-    console.log(err)
-    res.status(500).send("Unable to update database with new article");
-  }  
-});
-
-router.put("/articles/:id", async (req, res) => {
-    try {
-        const article = await Article.findById(req.params.id);
-        Object.assign(article, req.body);
-        article.save()
-        res.status(200).send("Article successfully updated");
-    } catch (err) {
-        console.log(err)
-        res.status(500).send("Unable to successfully update article");
+            return res.json(articles)                
+        } catch(err) {
+            return res.status(500).json(err)
+        }
     }
-});
 
-router.delete("/articles/:id", async (req, res) => {
- try {
-     const article = await Article.findById(req.params.id);
-     await article.remove();
-     res.status(200).send("Article successfully deleted")
- } catch (err) {
-     console.log(err)
-     res.status(500).send("Unable to successfully delete article")
- }
-});
+    async listById(req, res) {
+        try {
+            const { id } = req.params
+            const article = await Article.find({ id }).exec()
+            return res.json(article)
+        } catch (err) {
+            return res.status(500).json({ message: err.message});
+        }
+    }
 
-export default router;
+    async create(req, res) {
+        try {
+            const newArticle = new Article({
+                id: req.body.id,
+                featured: req.body.featured,
+                title: req.body.title,
+                url: req.body.url,
+                imageUrl: req.body.imageUrl,
+                newsSite: req.body.newsSite,
+                summary: req.body.summary,
+                publishedAt: req.body.publishedAt,
+                launches: [
+                    {
+                        id: req.body.id,
+                        provider: req.body.provider
+                    }
+                ],
+                events: [
+                    {
+                        id: req.body.id,
+                        provider: req.body.provider
+                    }
+                ]
+            });
+
+            await newArticle.save();
+
+            return res.status(201).json(newArticle);
+        } 
+        catch (err) {
+         return res.status(500).json({ message: err.message});
+       }  
+     };
+
+    async updateById(req, res) {
+        try {
+            const { id } = req.params;
+
+            const article = await Article.findOneAndUpdate({id}).exec();
+            // Object.assign(article, req.body);
+            return res.json(article);
+        } catch (err) {
+            return res.status(500).json({ message: err.message});
+        }
+    }
+    
+    async deleteById(req, res) {
+        try {
+            const { id } = req.params
+            await Article.findOneAndDelete({id});
+            // await article.remove();
+            return res.status(204).send("")
+        } catch (err) {
+            return res.status(500).json({ message: err.message});
+        }
+    };
+}
+
+const articleController = new ArticleController();
+
+export { articleController }
