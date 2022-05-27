@@ -1,4 +1,4 @@
-import Article from '../models/article.js'
+import Article from '../models/article.js';
 
 class ArticleController {
     async listAll(req, res) {
@@ -14,7 +14,7 @@ class ArticleController {
     async listById(req, res) {
         try {
             const { id } = req.params
-            const article = await Article.find({ id }).exec()
+            const article = await Article.find({ id: id }).exec()
             return res.json(article)
         } catch (err) {
             return res.status(500).json({ message: err.message});
@@ -79,6 +79,5 @@ class ArticleController {
     };
 }
 
-const articleController = new ArticleController();
-
-export { articleController }
+const Articles = new ArticleController();
+export { Articles }

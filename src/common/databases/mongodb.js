@@ -1,4 +1,6 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+import 'dotenv/config.js';
+
 const DBPASSWORD = process.env.DBPASSWORD;
 const DB = process.env.DB;
 
