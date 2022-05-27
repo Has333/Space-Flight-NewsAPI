@@ -11,6 +11,6 @@ routes.post("/articles", Articles.create);
 
 routes.put("/articles/:id", Articles.updateById);
 
-routes.delete("/articles/:id", Articles.deleteById)
+routes.delete("/articles/:id", Articles.deleteById);
 
 export { routes };

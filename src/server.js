@@ -8,5 +8,8 @@ const server = express();
 
 MongoDB.init();
 
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 server.use(routes);
+
 server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
