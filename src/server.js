@@ -1,4 +1,5 @@
 import express from 'express';
+import { UpsertToDatabaseAutomation } from './jobs/cron.js';
 import { routes } from './routes.js';
 import { MongoDB } from "./common/databases/mongodb.js";
 import "dotenv/config.js";
@@ -11,5 +12,7 @@ MongoDB.init();
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(routes);
+
+UpsertToDatabaseAutomation();
 
 server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
