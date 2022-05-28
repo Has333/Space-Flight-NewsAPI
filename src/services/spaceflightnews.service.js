@@ -3,12 +3,18 @@ import "dotenv/config";
 const API = process.env.API_URL;
 
 class SpaceflightnewsArticleService {
-    async listAll(start, limit){
-        const SpaceflightnewsDataResponse = await axios.get(API+`?_start=${start}&_limit=${limit}`);
-        const SpaceflightnewsArticles = SpaceflightnewsDataResponse.data;
+    async listArticles(start, limit){
+        const ArticlesDataResponse = await axios.get(API+`?_start=${start}&_limit=${limit}`);
+        const Articles = ArticlesDataResponse.data;
 
-        console.log(SpaceflightnewsArticles)
-        return SpaceflightnewsArticles
+        return Articles
+    }
+
+    async articlesAmount(){
+        const ArticlesAmountDataResponse = await axios.get(API+'/count');
+        const ArticlesAmount = ArticlesAmountDataResponse.data;
+
+        return ArticlesAmount
     }
 }
 

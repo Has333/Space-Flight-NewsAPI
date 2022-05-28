@@ -1,14 +1,21 @@
 import { SpaceflightnewsArticles } from "../services/spaceflightnews.service.js";
+import "dotenv/config";
 
 class AutomationFlow {
     async run() {
-        let start = 0;
-        let limit = 50;
-        let reachLimit = true;
-        
-        while(reachLimit) {
-            const Articles = await SpaceflightnewsArticles.listAll({start, limit});
-        }
+        function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms))
+          };
+
+        let article = 1;
+        let limit = await SpaceflightnewsArticles.articlesAmount();
+
+        while(article < limit){
+            sleep(3000);
+            const getArticle = await SpaceflightnewsArticles.listArticles(article, 1);
+            console.log(getArticle)
+            article ++;
+        };
     }
 }
 
