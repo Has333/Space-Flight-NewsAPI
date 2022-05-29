@@ -1,4 +1,4 @@
-import Article from '../models/article.js';
+import { Article } from '../models/article.js';
 
 class ArticleController {
     async listAll(req, res) {
