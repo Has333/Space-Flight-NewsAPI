@@ -1,5 +1,6 @@
 import { SpaceflightnewsArticles } from "../services/spaceflightnews.service.js";
 import { articleConfigModel } from "../common/helpers/articleConfig.helper.js";
+import { sleep } from "../common/helpers/sleep.helper.js";
 import { Article } from "../models/article.js";
 
 class AutomationFlow {
@@ -9,6 +10,7 @@ class AutomationFlow {
         let articlesPerRequest = 1;
 
         for (currentArticle; currentArticle <= articlesAmount; currentArticle++) { 
+             await sleep(1000);
              const getArticle = await SpaceflightnewsArticles.listArticles(currentArticle, articlesPerRequest);
              const { id, featured, title, url, imageUrl, newsSite, summary, publishedAt, provider } = getArticle[0];
              const articleConfig = articleConfigModel(id, featured, title, url, imageUrl, newsSite, summary, publishedAt, provider); 
