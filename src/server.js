@@ -1,7 +1,7 @@
-import express from 'express';
 import { UpsertArticlesToDatabaseAutomation } from './jobs/cron.js';
-import { routes } from './routes.js';
 import { MongoDB } from "./common/databases/mongodb.js";
+import { routes } from './routes.js';
+import express from 'express';
 import "dotenv/config.js";
 
 const PORT = process.env.PORT || 3000;
@@ -15,4 +15,9 @@ server.use(routes);
 
 UpsertArticlesToDatabaseAutomation();
 
-server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+server.listen(PORT, () => {
+console.log(`Server running on port: ${PORT}`)
+});
+
+
+
